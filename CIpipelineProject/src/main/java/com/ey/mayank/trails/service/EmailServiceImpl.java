@@ -2,6 +2,9 @@ package com.ey.mayank.trails.service;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import javax.validation.ValidationException;
 
 public class EmailServiceImpl implements MessageService {
 	@Override
@@ -24,7 +27,15 @@ public class EmailServiceImpl implements MessageService {
 			Pattern pattern=Pattern.compile("^([\\w]((\\.(?!\\.))|[-!#\\$%'\\*\\+/=\\?\\^`\\{\\}\\|~\\w])*)(?<=[\\w])@(([\\w][-\\w]*[\\w]\\.)+[a-zA-Z]{2,6})$", Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(email);
 			return matcher.matches();	
-		}catch(Exception e){
+		}catch(ValidationException e){
+			System.out.println("Exceptions - " + e);
+			return false;
+		}
+		catch(PatternSyntaxException e){
+			System.out.println("Exceptions - " + e);
+			return false;
+		}
+		catch(Exception e){
 			System.out.println("Exceptions - " + e);
 			return false;
 		}
