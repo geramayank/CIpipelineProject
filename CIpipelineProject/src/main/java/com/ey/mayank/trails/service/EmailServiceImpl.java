@@ -6,25 +6,35 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.validation.ValidationException;
 
+import com.ey.mayank.trials.exception.MyBusinessException;
+
 public class EmailServiceImpl implements MessageService {
 	@Override
 	public boolean sendMessage(String msg, String rec) {
-		if ( isValidEmailAddress(rec) ){
-			//logic to send email
-			System.out.println("Email sent to "+rec+ " with Message="+msg);
-			return true;
-		}
-		else
-		{
-			System.out.println("Invalid Email");
+		try {
+			if ( isValidEmailAddress(rec) ){
+				//logic to send email
+				System.out.println("Email sent to "+rec+ " with Message="+msg);
+				return true;
+			}
+			else
+			{
+				System.out.println("Invalid Email");
+				return false;
+			}
+		} catch (MyBusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return false;
 		}
 		
 	}
 	
-	public static boolean isValidEmailAddress(String email) {
+	public static boolean isValidEmailAddress(String email) throws MyBusinessException{
+		String patternString = "^([\\w]((\\.(?!\\.))|[-!#\\$%'\\*\\+/=\\?\\^`\\{\\}\\|~\\w])*)(?<=[\\w])@(([\\w][-\\w]*[\\w]\\.)+[a-zA-Z]{2,6})$";
 		try{
-			Pattern pattern=Pattern.compile("^([\\w]((\\.(?!\\.))|[-!#\\$%'\\*\\+/=\\?\\^`\\{\\}\\|~\\w])*)(?<=[\\w])@(([\\w][-\\w]*[\\w]\\.)+[a-zA-Z]{2,6})$", Pattern.CASE_INSENSITIVE);
+			
+			Pattern pattern=Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(email);
 			return matcher.matches();	
 		}catch(ValidationException e){
@@ -33,7 +43,8 @@ public class EmailServiceImpl implements MessageService {
 		}
 		catch(PatternSyntaxException e){
 			System.out.println("Exceptions - " + e);
-			return false;
+			throw new MyBusinessException("Incorrect Pattern" + patternString);
+			
 		}
 		catch(Exception e){
 			System.out.println("Exceptions - " + e);
