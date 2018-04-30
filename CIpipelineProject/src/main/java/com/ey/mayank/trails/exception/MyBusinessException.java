@@ -1,4 +1,4 @@
-package com.ey.mayank.trials.exception;
+package com.ey.mayank.trails.exception;
 
 public class MyBusinessException extends Exception {
 	/**

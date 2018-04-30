@@ -6,7 +6,7 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.validation.ValidationException;
 
-import com.ey.mayank.trials.exception.MyBusinessException;
+import com.ey.mayank.trails.exception.MyBusinessException;
 
 public class EmailServiceImpl implements MessageService {
 	@Override
